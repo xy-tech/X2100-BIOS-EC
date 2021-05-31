@@ -1,0 +1,12 @@
+[submodule "x2100-ec"]
+	path = x2100-ec
+	url = https://github.com/jwise/x2100-ec
+	branch = master
+[submodule "x210"]
+	path = x210
+	url = https://github.com/harrykipper/x210
+	branch = master
+[submodule "x210-ec"]
+	path = x210-ec
+	url = https://github.com/l29ah/x210-ec
+	branch = master
