@@ -10,3 +10,7 @@
 	path = x210-ec
 	url = https://github.com/l29ah/x210-ec
 	branch = master
+[submodule "flashrom"]
+	path = flashrom
+	url = https://github.com/flashrom/flashrom.git
+	branch = master
