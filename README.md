@@ -51,7 +51,7 @@ If you are OK with that risk, you can take the easy way to flash the firmware in
 For Linux users, flashrom has to be compiled from source in order to flash the firmware. I have provided the compiled binary as well.
 
 ## Risky and easy way (Windows)
-1. Download the BIOS update programme from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/).
+1. Download the BIOS update programme from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release tab on this page.
 1. Be sure to install the drivers in the downloaded folder. 
 1. Copy bios_hap_0_unsafe.bin to the folder.
 1. Rename as bios.bin
