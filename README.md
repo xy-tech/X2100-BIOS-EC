@@ -68,7 +68,7 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 		* HAP bit 1 BIOS and fn/ctrl swapped EC
 1. Rename the BIOS as bios.bin and EC as ec.bin
 1. Download update.sh from this repository.
-1. Download flashrom binary from this github repository.
+1. Download flashrom binary from the release page.
 	1. Alternatively, run `git clone https://github.com/flashrom/flashrom.git` to clone flashrom
 	1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom readme. 
 1. Place bios.bin, ec.bin, flashrom binary and update.sh in the same folder.
@@ -80,7 +80,7 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 
 ## Risk free way (Linux, easy)
 The BIOS provided comes with HAP bit set to 0. EC is patched. 
-1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/).
+1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release page.
 1. Run `sudo ./flashrom -p internal -w bios.bin` to flash the BIOS and shutdown the computer once the BIOS is verified. 
 1. Unplug power and reboot. 
 1. After booting back up, run `sudo bash update.sh` to flash the updated EC. 
