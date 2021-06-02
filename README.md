@@ -1,5 +1,7 @@
 # X210/X2100 compiled EC/BIOS
 **Focus of this repo will be on the X2100. The X210 and other repos are linked in this repo.**
+A copy of this article is on [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) as well, along with older versions of the BIOS.
+This repo aims to compile all the relevant BIOS/EC information on the X210 and the X2100. 
 
 # Content
 * x2100 (Main content of this repo, includes the BIOS and EC)
@@ -46,19 +48,78 @@ There has been people who has experienced a corrupted Intel ME after applying th
 
 If you are OK with that risk, you can take the easy way to flash the firmware in via Windows. 
 
-For Linux users, flashrom has to be compiled from source in order to flash the firmware.
+For Linux users, flashrom has to be compiled from source in order to flash the firmware. I have provided the compiled binary as well.
 
 ## Risky and easy way (Windows)
-1. Download the BIOS update programme from [my website](). 
-1. Be sure to install the drivers included in the folder. 
+1. Download the BIOS update programme from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/).
+1. Be sure to install the drivers in the downloaded folder. 
 1. Copy bios_hap_0_unsafe.bin to the folder.
 1. Rename as bios.bin
 1. Run update.bat as admin. 
 1. Shutdown and unplug power, including battery power.
-1. _IMPORTANT_: Wait 1 minute before plugging power back in. 
+1. _IMPORTANT_: Wait 1 minute before plugging power back in.
 
-## Risk free way (Linux)
+## Risk free way (Linux, complicated)
 1. Download the BIOS and EC you want to use. 
-	* Download bios_hap_0_unsafe.bin for a HAP bit 0 BIOS and ec_patched.bin for a normal patched EC
-1. Run `git clone --recursive https://github.com/xy-tech/X2100-BIOS-EC` to clone this repo and all the submodules. 
-1. Alternatively, run `git clone https://github.com/xy-tech/X2100-BIOS-EC` followed by `git clone https://github.com/flashrom/flashrom.git` to just clone the files here and 
+	* There are 2 options for BIOS and 2 options for EC so you have a total of 4 options.
+		* HAP bit 0 BIOS and normal EC
+		* HAP bit 0 BIOS and fn/ctrl swapped EC
+		* HAP bit 1 BIOS and normal EC
+		* HAP bit 1 BIOS and fn/ctrl swapped EC
+1. Rename the BIOS as bios.bin and EC as ec.bin
+1. Download update.sh from this repository.
+1. Download flashrom binary from this github repository.
+	1. Alternatively, run `git clone https://github.com/flashrom/flashrom.git` to clone flashrom
+	1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom readme. 
+1. Place bios.bin, ec.bin, flashrom binary and update.sh in the same folder.
+1. Run `sudo ./flashrom -p internal -w bios.bin` to flash the BIOS and shutdown the computer once the BIOS is verified. 
+1. Unplug power and reboot. 
+1. After booting back up, run `sudo bash update.sh` to flash the updated EC. 
+1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
+1. Reboot and verify that all the settings are intact. 
+
+## Risk free way (Linux, easy)
+The BIOS provided comes with HAP bit set to 0. EC is patched. 
+1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/).
+1. Run `sudo ./flashrom -p internal -w bios.bin` to flash the BIOS and shutdown the computer once the BIOS is verified. 
+1. Unplug power and reboot. 
+1. After booting back up, run `sudo bash update.sh` to flash the updated EC. 
+1. _IMPORTANT_: shutdown and unplug the power for 1 minute. 
+1. Reboot and verify that all the settings are intact. 
+
+# Fixing screen tearing
+* Turn off CSM settings in the advanced menu. This is turned off by default if you flash the BIOS in here.
+* Disable SA GV for RAM. 
+	* Located under advanced > chipset. 
+
+# Other BIOS tweaks
+* Undervolt the machine
+	* Advanced > Overclocking Performance Menu. 
+	* Enable overclocking features
+	* Processor > core/ring 
+	* Change the offset of the voltage in mV. 
+	* Change prefix to negative to indicate undervolt. 
+	* Take caution with this and do plenty of test to ensure stability.
+	* There are also software options to do this. 
+* [PL1/PL2 adjustments](https://www.anandtech.com/show/13544/why-intel-processors-draw-more-power-than-expected-tdp-turbo)
+	* [Article I wrote on this](https://www.xyte.ch/2020/05/29/x2100-performance/)
+	* Advanced > Power & Performance > CPU - Power management Control > Config TDP
+	* A few presets here. Default is nominal and you can change the nominal preset.
+	* Adjust PL1, PL2 and tau setting for nominal profile.
+* Enable C states
+	* Advanced > Power & Performance
+	* Enable C1 & C3 states.
+	* Enable promotion and demotion of C-states.
+	* Change package C-state to auto.
+	
+# Thanks
+Thanks to everyone who made it possible.
+EC patches: mjg59, jwise, l29ah
+X210 coreboot: mjg59
+X210 compilation: harrykipper
+X2100 BIOS: he chose to remain anonymous
+Flashrom: flashrom team
+Motherboard: 51nb, Hope, 17m19
+
+# License
+The BIOS binaries are copyrighted material but this repo is for easy file browsing so please do not sue me. Everything else belongs to their respective copyright owners. Everything by me is GPLv3. Feel free to fork and play around. 
