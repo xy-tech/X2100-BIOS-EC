@@ -60,6 +60,7 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 1. _IMPORTANT_: Wait 1 minute before plugging power back in.
 
 ## Risk free way (Linux, complicated)
+1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
 1. Download the BIOS and EC you want to use. 
 	* There are 2 options for BIOS and 2 options for EC so you have a total of 4 options.
 		* HAP bit 0 BIOS and normal EC
@@ -79,7 +80,8 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 1. Reboot and verify that all the settings are intact. 
 
 ## Risk free way (Linux, easy)
-The BIOS provided comes with HAP bit set to 0. EC is patched. 
+The BIOS provided comes with HAP bit set to 0. EC is patched.
+1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
 1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release page.
 1. Run `sudo ./flashrom -p internal -w bios.bin` to flash the BIOS and shutdown the computer once the BIOS is verified. 
 1. Unplug power and reboot. 
