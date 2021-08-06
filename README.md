@@ -4,7 +4,7 @@ A copy of this article is on [my website](https://www.xyte.ch/support/51nb-x210-
 This repo aims to compile all the relevant BIOS/EC information on the X210 and the X2100. 
 
 # If you just want to update the BIOS/EC and don't want to read so much
-Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases) and read the README to flash the updates. The instructions are also found [here](#risk-free way-linux-easy).
+Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases) and read the README to flash the updates. The instructions are also found [here](#risk-free-way-linux-easy).
 
 # Content
 * x2100 (Main content of this repo, includes the BIOS and EC)
