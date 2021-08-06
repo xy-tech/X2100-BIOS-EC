@@ -3,6 +3,9 @@
 A copy of this article is on [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) as well, along with older versions of the BIOS.
 This repo aims to compile all the relevant BIOS/EC information on the X210 and the X2100. 
 
+# If you just want to update the BIOS/EC and don't want to read so much
+Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases) and read the README to flash the updates. The instructions are also found [here](#risk-free way-linux-easy).
+
 # Content
 * x2100 (Main content of this repo, includes the BIOS and EC)
 * [X210 EC: Original X210 EC patches](https://github.com/l29ah/x210-ec)
@@ -79,12 +82,12 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 ## Risk free way (Linux, easy)
 The BIOS provided comes with HAP bit set to 0. EC is also patched.
 1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
-1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release page.
+1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the [release page](https://github.com/xy-tech/X2100-BIOS-EC/releases).
 1. [Update the BIOS](#to-update-the-bios)
 1. [Update the EC](#to-update-the-ec)
 
 ## To update the BIOS
-1. Run `sudo bash bios_update.sh` to flash the BIOS 
+1. Run `sudo bash bios_update.sh` to flash the BIOS.
 1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
 1. Reboot and verify that all the settings are intact. 
 
