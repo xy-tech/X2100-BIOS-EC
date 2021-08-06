@@ -44,7 +44,7 @@ This repo aims to compile all the relevant BIOS/EC information on the X210 and t
 
 # Instructions to update
 ## Background
-There has been people who has experienced a corrupted Intel ME after applying the firmware update directly with the EC patch. It's still unknown why and we guess that it somehow set off an eFuse which caused the ME to be corrupted. The only problem that appears is that it takes about 10s to cold boot each time due to memory retraining.
+There have been people who has experienced a corrupted Intel ME after applying the firmware update directly with the EC patch. It's still unknown why and we guess that it somehow set off an eFuse which caused the ME to be corrupted. The only problem that appears is that it takes about 10s to cold boot each time due to memory retraining.
 
 If you are OK with that risk, you can take the easy way to flash the firmware in via Windows. 
 
@@ -119,7 +119,7 @@ Thanks to everyone who made it possible.
 EC patches: mjg59, jwise, l29ah
 X210 coreboot: mjg59
 X210 compilation: harrykipper
-X2100 BIOS: he chose to remain anonymous
+X2100 BIOS updates: chose to remain anonymous
 Flashrom: flashrom team
 Motherboard: 51nb, Hope, 17m19
 
