@@ -73,20 +73,24 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 	1. Alternatively, run `git clone https://github.com/flashrom/flashrom.git` to clone flashrom
 	1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom readme. 
 1. Place bios.bin, ec.bin, flashrom binary and update.sh in the same folder.
-1. Run `sudo ./flashrom -p internal -w bios.bin` to flash the BIOS and shutdown the computer once the BIOS is verified. 
-1. Unplug power and reboot. 
-1. After booting back up, run `sudo bash update.sh` to flash the updated EC. 
+1. [Update the BIOS] (#to-update-the-bios)
+1. [Update the EC] (#to-update-the-ec)
+
+## Risk free way (Linux, easy)
+The BIOS provided comes with HAP bit set to 0. EC is also patched.
+1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
+1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release page.
+1. [Update the BIOS] (#to-update-the-bios)
+1. [Update the EC] (#to-update-the-ec)
+
+## To update the BIOS
+1. Run `sudo bash bios_update.sh` to flash the BIOS 
 1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
 1. Reboot and verify that all the settings are intact. 
 
-## Risk free way (Linux, easy)
-The BIOS provided comes with HAP bit set to 0. EC is patched.
-1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
-1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release page.
-1. Run `sudo ./flashrom -p internal -w bios.bin` to flash the BIOS and shutdown the computer once the BIOS is verified. 
-1. Unplug power and reboot. 
-1. After booting back up, run `sudo bash update.sh` to flash the updated EC. 
-1. _IMPORTANT_: shutdown and unplug the power for 1 minute. 
+## To update the EC 
+1. After booting back up, run `sudo bash ec_update.sh` to flash the updated EC. 
+1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
 1. Reboot and verify that all the settings are intact. 
 
 # Fixing screen tearing
