@@ -46,7 +46,7 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 	* Linux script to update BIOS safely.
 	
 * dual_pcie.bin
-	* 
+	* The stock mSATA/4G module (top slot) has been changed to PCIe. Unfortunately it does not work with Intel WiFi cards, but NVMe drives and other WiFi drives do work. This would unlock faster NVMe SSDs by using an NVMe 2242 > mPCIe adapter. 
 
 # Instructions to update
 ## Background
