@@ -19,7 +19,7 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 	* bios_hap_0_unsafe.bin: EC is PATCHED, _NOT RECOMMENDED_
 	* BIOS is properly configured with sensible power levels (15W fallback).
 	* CPU C states are enabled with options of promotion and demotion. Enables better power savings. 
-	* CSM completely disabled to avoid screen tearing. This will not allow BIOS (non UEFI) OS to boot. Reenable this option to use BIOS OS.
+	* CSM completely disabled to avoid screen tearing. This will not allow BIOS (non UEFI) OS to boot. *Reenable this option to use BIOS OS*.
 	* RAM is set to 2666MHz all the time to reduce screen tearing.
 	* IGP is set to 1GB for higher intel GVT-G resolutions.
 	* CPU microcode is updated. 
@@ -44,6 +44,9 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 	
 * update.sh
 	* Linux script to update BIOS safely.
+	
+* dual_pcie.bin
+	* 
 
 # Instructions to update
 ## Background
@@ -120,7 +123,18 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 	* Enable C1 & C3 states.
 	* Enable promotion and demotion of C-states.
 	* Change package C-state to auto.
-	
+
+# BONUS 1: How to edit and patch BIOS
+* Changing factory presets:
+	* Use AMIBIOS to adjust settings. Several versions don't really work. Just try out different versions on the internet and see which one works. 
+* Updating internal ME, change PCIe/SATA lanes etc:
+	* Intel CSME v14 R1 (Intel FIT) to adjust these internal settings.
+
+# BONUS 2: Provisioning Intel Bootguard yourself
+* By using Intel FIT, you can technically provision Bootguard yourself as the machine comes unprovisioned with a clean unfused PCH. 
+* Google around to find out more. All warranty is voided if you attempt to do this. 
+* Doing this would probably make this the most secure laptop in the world as literally only you own the firmware keys. 
+
 # Thanks
 Thanks to everyone who made it possible.
 EC patches: mjg59, jwise, l29ah
