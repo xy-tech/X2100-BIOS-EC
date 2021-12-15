@@ -12,11 +12,10 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 * [X210 BIOS/EC: Compiled X210 BIOS/EC patches in a single repo](https://github.com/harrykipper/x210)
 * [X2100 EC: X2100 EC patches based on the X210](https://github.com/jwise/x2100-ec)
 * [Flashrom for Linux](https://flashrom.org/Flashrom)
+* [Coreboot for X2100](https://github.com/mjg59/coreboot/tree/x2100_ng)
 
 # Everything inside the x2100 folder 
-* bios_hap_0_safe.bin, bios_hap_1_safe.bin and bios_hap_0_unsafe.bin
-	* bios_hap_0_safe.bin and bios_hap_1_safe.bin: EC is _UNPATCHED_
-	* bios_hap_0_unsafe.bin: EC is PATCHED, _NOT RECOMMENDED_
+* bios_hap_0.bin
 	* BIOS is properly configured with sensible power levels (15W fallback).
 	* CPU C states are enabled with options of promotion and demotion. Enables better power savings. 
 	* CSM completely disabled to avoid screen tearing. This will not allow BIOS (non UEFI) OS to boot. *Reenable this option to use BIOS OS*.
@@ -25,8 +24,9 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 	* CPU microcode is updated. 
 	* Intel ME is updated to 14.1.
 	* GOP updated.
+	* EC is updated using [jwise's patches](https://github.com/jwise/x2100-ec)
 
-* bios_hap_0_safe.bin vs bios_hap_1_safe.bin
+* bios_hap_1.bin
 	* HAP bit is set to 1 on bios_hap_1.bin. This is the modern equivalent of ME Cleaner. 
 
 * v25_original.bin
@@ -46,17 +46,10 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 	* Linux script to update BIOS safely.
 	
 * dual_pcie.bin
-	* The stock mSATA/4G module (top slot) has been changed to PCIe. Unfortunately it does not work with Intel WiFi cards, but NVMe drives and other WiFi drives do work. This would unlock faster NVMe SSDs by using an NVMe 2242 > mPCIe adapter. 
+	* The stock mSATA/4G module (top slot) has been changed to PCIe. Unfortunately it does not work with Intel WiFi cards, but NVMe drives and other WiFi drives do work. This would unlock faster NVMe SSDs by using an NVMe 2242 female to mPCIe male adapter. 
 
 # Instructions to update
-## Background
-There have been people who has experienced a corrupted Intel ME after applying the firmware update directly with the EC patch. It's still unknown why and we guess that it somehow set off an eFuse which caused the ME to be corrupted. The only problem that appears is that it takes about 10s to cold boot each time due to memory retraining.
-
-If you are OK with that risk, you can take the easy way to flash the firmware in via Windows. 
-
-For Linux users, flashrom has to be compiled from source in order to flash the firmware. I have provided the compiled binary as well.
-
-## Risky and easy way (Windows)
+## Windows
 1. Download the BIOS update programme from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release tab on this page.
 1. Be sure to install the drivers in the downloaded folder. 
 1. Copy bios_hap_0_unsafe.bin to the folder.
@@ -65,9 +58,19 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 1. Shutdown and unplug power, including battery power.
 1. _IMPORTANT_: Wait 1 minute before plugging power back in.
 
-## Risk free way (Linux, complicated)
+## Linux
+For Linux users, flashrom has to be compiled from source in order to flash the firmware. I have provided the compiled binary as well.
+
+### Linux (BIOS & EC patches together)
+The BIOS provided comes with HAP bit set to 0. EC is also patched.
 1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
-1. Download the BIOS and EC you want to use. 
+1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the [release page](https://github.com/xy-tech/X2100-BIOS-EC/releases).
+1. [Update the BIOS](#to-update-the-bios)
+1. [Update the EC](#to-update-the-ec)
+
+### Linux (for separate BIOS & EC patches)
+1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).
+1. Download the BIOS and EC you want to use.
 	* There are 2 options for BIOS and 2 options for EC so you have a total of 4 options.
 		* HAP bit 0 BIOS and normal EC
 		* HAP bit 0 BIOS and fn/ctrl swapped EC
@@ -82,13 +85,6 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 1. [Update the BIOS](#to-update-the-bios)
 1. [Update the EC](#to-update-the-ec)
 
-## Risk free way (Linux, easy)
-The BIOS provided comes with HAP bit set to 0. EC is also patched.
-1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
-1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the [release page](https://github.com/xy-tech/X2100-BIOS-EC/releases).
-1. [Update the BIOS](#to-update-the-bios)
-1. [Update the EC](#to-update-the-ec)
-
 ## To update the BIOS
 1. Run `sudo bash bios_update.sh` to flash the BIOS.
 1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
@@ -96,8 +92,15 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 
 ## To update the EC 
 1. After booting back up, run `sudo bash ec_update.sh` to flash the updated EC. 
-1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
-1. Reboot and verify that all the settings are intact. 
+1. _IMPORTANT_: Shutdown and unplug the power for 1 minute.
+1. Reboot and verify that all the settings are intact.
+
+# Enable PCH TPM2.0 (onboard TPM that is in Intel ME)
+1. Go into BIOS
+1. Advanced
+1. PCH-FW Config
+1. PTT
+1. Change from dTPM to PTT
 
 # Fixing screen tearing
 * Turn off CSM settings in the advanced menu. This is turned off by default if you flash the BIOS in here.
@@ -137,7 +140,7 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 
 # Thanks
 Thanks to everyone who made it possible.
-EC patches: mjg59, jwise, l29ah
+EC patches: mjg59, jwise, l29ah, exander77
 X210 coreboot: mjg59
 X210 compilation: harrykipper
 X2100 BIOS updates: chose to remain anonymous

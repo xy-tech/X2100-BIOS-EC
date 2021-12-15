@@ -14,3 +14,6 @@
 	path = flashrom
 	url = https://github.com/flashrom/flashrom.git
 	branch = master
+[submodule "x2100_coreboot"]
+	path = x2100_coreboot
+	url = https://github.com/mjg59/coreboot.git
