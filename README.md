@@ -11,64 +11,80 @@ Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases)
 * [X210 EC: Original X210 EC patches](https://github.com/l29ah/x210-ec)
 * [X210 BIOS/EC: Compiled X210 BIOS/EC patches in a single repo](https://github.com/harrykipper/x210)
 * [X2100 EC: X2100 EC patches based on the X210](https://github.com/jwise/x2100-ec)
+* [X2100 EC updated: exander77's patches based on jwise's repo, not included in this repo](https://github.com/exander77/x2100-ec)
 * [Flashrom for Linux](https://flashrom.org/Flashrom)
 * [Coreboot for X2100](https://github.com/mjg59/coreboot/tree/x2100_ng)
 
 # Everything inside the x2100 folder 
-* bios_hap_0.bin
+## BIOS images
+### All the BIOS binaries contains the updated EC
+
+* bios_15122021.bin
 	* BIOS is properly configured with sensible power levels (15W fallback).
 	* CPU C states are enabled with options of promotion and demotion. Enables better power savings. 
-	* CSM completely disabled to avoid screen tearing. This will not allow BIOS (non UEFI) OS to boot. *Reenable this option to use BIOS OS*.
+	* UEFI video is disabled under CSM. Disable if OS does not display.
 	* RAM is set to 2666MHz all the time to reduce screen tearing.
 	* IGP is set to 1GB for higher intel GVT-G resolutions.
 	* CPU microcode is updated. 
 	* Intel ME is updated to 14.1.
 	* GOP updated.
-	* EC is updated using [jwise's patches](https://github.com/jwise/x2100-ec)
+	* EC is updated using [patches](https://github.com/exander77/x2100-ec)
 
-* bios_hap_1.bin
-	* HAP bit is set to 1 on bios_hap_1.bin. This is the modern equivalent of ME Cleaner. 
+* bios_15122021_me_disable.bin
+	* Exactly the same image as bios_15122021.bin except the following: ME disabled, useful for those with the [ME issue](https://www.xyte.ch/2021/12/14/x2100-me-bios-ec-and-coreboot/).
+
+* dual_pcie_15122021_me_disable.bin and dual_pcie_15122021.bin
+	* Exactly the same image as bios_15122021.bin except the following: The stock mSATA/4G module (top slot) has been changed to PCIe. Unfortunately it does not work with Intel WiFi cards, but NVMe drives and other WiFi drives do work. This would unlock faster NVMe SSDs by using an NVMe 2242 female to mPCIe male adapter. This also enables dual WiFi cards, allowing those who wants dual WiFi cards for development and testing.
 
 * v25_original.bin
-	* The latest factory BIOS (V25) is unoptimised. The main issue is that the EC is unpatched and power level settings are not set properly (65W PL1). The main BIOS is in the folder x2100.
+	* The latest factory BIOS (V25)
+	
+## EC binaries
 
-* ec_patched.bin
-	* Patched EC using [jwise's patches](https://github.com/jwise/x2100-ec). Includes all the patches except the fn/ctrl patch.
+* *_fast_charge.bin
+	* Patched EC using [exander's patches](https://github.com/exander77/x2100-ec). Includes all the patches except the fn/ctrl patch. Power charging is set at 80W peak. Only chargers >65W will work, excluding most 65W chargers. Fan speed is set to silent 1 profile.
 
-* ec_patched_fn_ctrl_swapped.bin
-	* Patched EC using [jwise's patches](https://github.com/jwise/x2100-ec). Includes all the patches including the fn/ctrl patch.
+* *_slow_charge.bin
+	* Patched EC using [exander's patches](https://github.com/exander77/x2100-ec). Includes all the patches detailed above. Power charging is set at minimum 45W. 65W chargers will work, useful for those who wants to bring a small USB-C charger.
+
+* *_fn_ctrl_swapped.bin
+	* Patched EC using [exander's patches](https://github.com/exander77/x2100-ec). Includes all the patches detailed above including swapped fn/ctrl patch.
 	* May have weird behaviour when using an external mouse. Try it out and revert to non swapped variant.
 
+## Other useful files
+
 * layout
-	* Updated layout file for the X2100. EC section manually added in after extracting the sections via ifdtool. 
-	
-* update.sh
-	* Linux script to update BIOS safely.
-	
-* dual_pcie.bin
-	* The stock mSATA/4G module (top slot) has been changed to PCIe. Unfortunately it does not work with Intel WiFi cards, but NVMe drives and other WiFi drives do work. This would unlock faster NVMe SSDs by using an NVMe 2242 female to mPCIe male adapter. 
+	* BIOS layout files for the X2100 BIOS image 
+
+* x2100_helper.sh
+	* BIOS and EC update and management script for Unix users. Requires flashrom to be in the same directory.
+
+* flashrom
+	* Compiled flashrom from master that will work on 10th gen Comet Lake. Compiled for Linux x64 systems. SHA256: dbfadc52b1e1aa12bfb3e26c8e72d183037962b0ba0e65fb1987df5b2d888e56
 
 # Instructions to update
 ## Windows
+This patches both the BIOS and EC. You'll need to build the BIOS with your [preferred BIOS image and EC](#building-and-flashing-your-selected-bios-in-linux) if you want a customised image.
 1. Download the BIOS update programme from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release tab on this page.
-1. Be sure to install the drivers in the downloaded folder. 
-1. Copy bios_hap_0_unsafe.bin to the folder.
-1. Rename as bios.bin
+1. Be sure to install the drivers in the downloaded folder.
+1. Copy the preferred full BIOS image to the folder.
+1. Rename as bios.bin.
 1. Run update.bat as admin. 
 1. Shutdown and unplug power, including battery power.
 1. _IMPORTANT_: Wait 1 minute before plugging power back in.
 
 ## Linux
-For Linux users, flashrom has to be compiled from source in order to flash the firmware. I have provided the compiled binary as well.
+For Linux users, flashrom has to be compiled from source in order to flash the firmware. The compiled binary is provided in this repo as well.
 
-### Linux (BIOS & EC patches together)
-The BIOS provided comes with HAP bit set to 0. EC is also patched.
+### Flashing the full BIOS image
 1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).  
-1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the [release page](https://github.com/xy-tech/X2100-BIOS-EC/releases).
-1. [Update the BIOS](#to-update-the-bios)
-1. [Update the EC](#to-update-the-ec)
+1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the [release page](https://github.com/xy-tech/X2100-BIOS-EC/releases) or [generate your own](building-and-flashing-your-selected-bios-in-linux) using the helper script.
+1. Make sure you have the full BIOS image, flashrom and x2100_helper.sh in the same directory
+1. Run helper script: `sudo bash x2100_helper.sh -f -i bios.bin`
+1. Alternative, look [here to update the BIOS only](#to-update-the-bios)
+1. [Or here for the EC only](#to-update-the-ec)
 
-### Linux (for separate BIOS & EC patches)
+### Building and flashing your selected BIOS in Linux
 1. Set `iomem=relaxed` in [grub config](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed).
 1. Download the BIOS and EC you want to use.
 	* There are 2 options for BIOS and 2 options for EC so you have a total of 4 options.
@@ -77,21 +93,24 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 		* HAP bit 1 BIOS and normal EC
 		* HAP bit 1 BIOS and fn/ctrl swapped EC
 1. Rename the BIOS as bios.bin and EC as ec.bin
-1. Download update.sh from this repository.
-1. Download flashrom binary from the release page.
+1. Download latest release from release page for flashrom and helper script.
 	1. Alternatively, run `git clone https://github.com/flashrom/flashrom.git` to clone flashrom
-	1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom readme. 
-1. Place bios.bin, ec.bin, flashrom binary and update.sh in the same folder.
+	1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom README. 
+1. Place bios.bin, ec.bin, flashrom binary and x2100_helper.sh in the same folder.
+1. To build a full flashable BIOS image, run: `sudo bash x2100_helper.sh -c -b bios.bin -e ec.bin -o output.bin`
+1. [Update the whole BIOS image](#flashing-the-full-bios-image)
 1. [Update the BIOS](#to-update-the-bios)
 1. [Update the EC](#to-update-the-ec)
 
-## To update the BIOS
+### To update the BIOS region only
 1. Run `sudo bash bios_update.sh` to flash the BIOS.
+1. Alternatively, run the helper script to update the BIOS: `sudo bash x2100_helper.sh -f -b bios.bin`
 1. _IMPORTANT_: Shutdown and unplug the power for 1 minute. 
 1. Reboot and verify that all the settings are intact. 
 
-## To update the EC 
-1. After booting back up, run `sudo bash ec_update.sh` to flash the updated EC. 
+### To update the EC region only
+1. Run `sudo bash ec_update.sh` to flash the updated EC.
+1. Alternatively, run the helper script to update the EC: `sudo bash x2100_helper.sh -f -b ec.bin`
 1. _IMPORTANT_: Shutdown and unplug the power for 1 minute.
 1. Reboot and verify that all the settings are intact.
 
@@ -100,10 +119,10 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 1. Advanced
 1. PCH-FW Config
 1. PTT
-1. Change from dTPM to PTT
+1. Change dTPM to PTT
 
 # Fixing screen tearing
-* Turn off CSM settings in the advanced menu. This is turned off by default if you flash the BIOS in here.
+* Turn off CSM settings in the advanced menu.
 * Disable SA GV for RAM. 
 	* Located under advanced > chipset. 
 
@@ -129,7 +148,7 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 
 # BONUS 1: How to edit and patch BIOS
 * Changing factory presets:
-	* Use AMIBIOS to adjust settings. Several versions don't really work. Just try out different versions on the internet and see which one works. 
+	* Use AMIBIOS (google around for the binary) to adjust settings. Several versions don't really work. Just try out different versions on the internet and see which one works.
 * Updating internal ME, change PCIe/SATA lanes etc:
 	* Intel CSME v14 R1 (Intel FIT) to adjust these internal settings.
 
@@ -137,6 +156,9 @@ The BIOS provided comes with HAP bit set to 0. EC is also patched.
 * By using Intel FIT, you can technically provision Bootguard yourself as the machine comes unprovisioned with a clean unfused PCH. 
 * Google around to find out more. All warranty is voided if you attempt to do this. 
 * Doing this would probably make this the most secure laptop in the world as literally only you own the firmware keys. 
+
+# BONUS 3: Coreboot
+* mjg59 has kindly ported coreboot to the X2100. Feel free to compile from his repo. It is included as a submodule for in this repo as well. 
 
 # Thanks
 Thanks to everyone who made it possible.
@@ -148,4 +170,4 @@ Flashrom: flashrom team
 Motherboard: 51nb, Hope, 17m19
 
 # License
-The BIOS binaries are copyrighted material but this repo is for easy file browsing so please do not sue me. Everything else belongs to their respective copyright owners. Everything by me is GPLv3. Feel free to fork and play around. 
+The BIOS binaries contains copyrighted material from AMI but this repo is for documentation so please do not sue me. Everything else belongs to their respective copyright owners. Everything by me is GPLv3 including the helper script. Feel free to fork and play around.
