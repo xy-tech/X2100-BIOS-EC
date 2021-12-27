@@ -66,7 +66,7 @@ Flash()
 			# place extracted ec into new bios to preserve old ec
 			dd if=ec_dump.bin of=new_bios.bin bs=1024 count=64 seek=4096
 			# place new bios into the rest of the bios to flash
-			dd if=bios.bin of=new_bios.bin bs=1024 seek=4160 skip=4160
+			dd if="${argarr[$i]}" of=new_bios.bin bs=1024 seek=4160 skip=4160
 			# flash new_bios.bin
 			./flashrom -p internal -w new_bios.bin
 			# clean up
