@@ -76,12 +76,18 @@ This patches both the BIOS and EC. You'll need to build the BIOS with your [pref
 1. _IMPORTANT_: Wait 1 minute before plugging power back in.
 
 ## Linux
-For Linux users, flashrom has to be compiled from source in order to flash the firmware. The compiled binary is provided in this repo as well.
+
+### Obtaining flashrom
+
+For Linux users, flashrom has to be compiled from source in order to flash the firmware as the support for 10th generation Intel chipsets is not included in the stable release yet. A compiled binary is [provided in this repo](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/flashrom), or you can compile it yourself:
+
+1. Run `git clone https://github.com/flashrom/flashrom.git` to clone flashrom
+1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom README.
 
 ### Flashing the full BIOS image
 1. Set the `iomem=relaxed` kernel parameter in your bootloader config ([see a guide for GRUB here](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed)).  
 1. Download the files needed from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the [release page](https://github.com/xy-tech/X2100-BIOS-EC/releases) or [generate your own](building-and-flashing-your-selected-bios-in-linux) using the helper script.
-1. Make sure you have the full BIOS image, flashrom and `x2100_helper.sh` in the same directory
+1. Make sure you have the full BIOS image, [flashrom](#obtaining-flashrom) and `x2100_helper.sh` in the same directory
 1. Run helper script: `sudo bash x2100_helper.sh -f -i bios.bin`
 1. Alternative, look [here to update the BIOS only](#to-update-the-bios-region-only)
 1. [Or here for the EC only](#to-update-the-ec-region-only)
@@ -108,14 +114,10 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
     | 1                           | mPCIe    | yes          | no          | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
     | 1                           | mPCIe    | yes          | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
 1. Rename the BIOS as `bios.bin` and EC as `ec.bin`
-1. Download latest release from release page for flashrom and helper script.
-	1. Alternatively, run `git clone https://github.com/flashrom/flashrom.git` to clone flashrom
-	1. `cd flashrom` and build flashrom by running `make`. More instructions are located in the flashrom README. 
+1. Download [flashrom](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/flashrom) and the [helper script](https://raw.githubusercontent.com/xy-tech/X2100-BIOS-EC/main/x2100/x2100_helper.sh) (both are also available in the [releases](https://github.com/xy-tech/X2100-BIOS-EC/releases)). Alternatively, you can [compile flashrom yourself](#obtaining-flashrom).
 1. Place `bios.bin`, `ec.bin`, flashrom binary and `x2100_helper.sh` in the same folder.
 1. To build a full flashable BIOS image, run: `sudo bash x2100_helper.sh -c -b bios.bin -e ec.bin -o output.bin`
-1. [Update the whole BIOS image](#flashing-the-full-bios-image)
-1. [Update the BIOS](#to-update-the-bios-region-only)
-1. [Update the EC](#to-update-the-ec-region-only)
+1. [Update the whole BIOS image](#flashing-the-full-bios-image) or [only the BIOS](#to-update-the-bios-region-only) or [only the EC](#to-update-the-ec-region-only)
 
 ### To update the BIOS region only
 1. Run the helper script to update the BIOS: `sudo bash x2100_helper.sh -f -b bios.bin`
