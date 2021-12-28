@@ -65,6 +65,8 @@ The git repos listed above are listed as git submodules, once you cloned this re
 	* Compiled flashrom from master that will work on 10th gen Comet Lake. Compiled for Linux x64 systems. SHA256: dbfadc52b1e1aa12bfb3e26c8e72d183037962b0ba0e65fb1987df5b2d888e56
 
 # Instructions to update
+**Note:** after updating the BIOS to some of the recent unofficial ones, the version and build date shown in the BIOS setup won't change.
+
 ## Windows
 This patches both the BIOS and EC. You'll need to build the BIOS with your [preferred BIOS image and EC](#building-and-flashing-your-selected-bios-in-linux) if you want a customised image.
 1. Download the BIOS update programme from [my website](https://www.xyte.ch/support/51nb-x210-x2100-software-support/) or from the release tab on this page.
