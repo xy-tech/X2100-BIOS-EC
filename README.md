@@ -32,10 +32,10 @@ The git repos listed above are listed as git submodules, once you cloned this re
 	* GOP updated.
 	* EC is updated using [patches](https://github.com/exander77/x2100-ec)
 
-* `bios_15122021_me_disable.bin`
-	* Exactly the same image as `bios_15122021.bin` except the following: ME disabled, useful for those with the [ME issue](https://www.xyte.ch/2021/12/14/x2100-me-bios-ec-and-coreboot/).
+* `bios_15122021_me_disable.bin` (may not work from some preliminary testings)
+	* Exactly the same image as `bios_15122021.bin` except the following: ME disabled, useful for those with the [ME issue](https://www.xyte.ch/2021/12/14/x2100-me-bios-ec-and-coreboot/). This disables the ME in the menu section in BIOS and does not set HAP bit = 1.
 
-* `dual_pcie_15122021_me_disable.bin` and `dual_pcie_15122021.bin`
+* `dual_pcie_15122021_me_disable.bin` (may not work from some preliminary testings)and `dual_pcie_15122021.bin`
 	* Exactly the same image as `bios_15122021.bin` except the following: The stock mSATA/4G module (top slot) has been changed to PCIe. Unfortunately it does not work with Intel WiFi cards, but NVMe drives and other WiFi drives do work. This would unlock faster NVMe SSDs by using an NVMe 2242 female to mPCIe male adapter. This also enables dual WiFi cards, allowing those who wants dual WiFi cards for development and testing.
 
 * `v25_original.bin`
@@ -65,7 +65,7 @@ The git repos listed above are listed as git submodules, once you cloned this re
 	* Compiled flashrom from master that will work on 10th gen Comet Lake. Compiled for Linux x64 systems. SHA256: dbfadc52b1e1aa12bfb3e26c8e72d183037962b0ba0e65fb1987df5b2d888e56
 
 # Instructions to update
-**Note:** after updating the BIOS to some of the recent unofficial ones, the version and build date shown in the BIOS setup won't change.
+**Note:** After updating the BIOS to some of the recent unofficial ones, the version and build date shown in the BIOS setup won't change.
 
 ## Windows
 This patches both the BIOS and EC. You'll need to build the BIOS with your [preferred BIOS image and EC](#building-and-flashing-your-selected-bios-in-linux) if you want a customised image.
@@ -97,24 +97,24 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 ### Building and flashing your selected BIOS in Linux
 1. Set the `iomem=relaxed` kernel parameter in your booloader config ([see a guide for GRUB here](https://askubuntu.com/questions/1120578/how-do-i-edit-grub-to-add-iomem-relaxed)).
 1. Download the BIOS and EC you want to use. There are 4 options for BIOS (HAP bit 0 vs. 1, top slot mSATA vs. mPCIe) and 4 options for EC (with or without Fn/Ctrl swap and fast charge) so you have a total of 16 options:
-    | HAP bit (disables Intel ME) | Top slot | Fn/Ctrl swap | Fast charge | BIOS file                                                                                                               | EC file                                                                                                                        |
+    | ME disabled in menu | Top slot | Fn/Ctrl swap | Fast charge | BIOS file                                                                                                               | EC file                                                                                                                        |
     |-----------------------------|----------|--------------|-------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-    | 0                           | mSATA    | no           | no          | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin)                       | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin)                      |
-    | 0                           | mSATA    | no           | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin )                     | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin)                      |
-    | 0                           | mSATA    | yes          | no          | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin )                     | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin)   |
-    | 0                           | mSATA    | yes          | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin )                     | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin)   |
-    | 0                           | mPCIe    | no           | no          | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin )                | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin )                    |
-    | 0                           | mPCIe    | no           | yes         | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin)                  | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin )                    |
-    | 0                           | mPCIe    | yes          | no          | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin )                | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
-    | 0                           | mPCIe    | yes          | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin )                | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
-    | 1                           | mSATA    | no           | no          | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin)        | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin )                    |
-    | 1                           | mSATA    | no           | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin )      | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin )                    |
-    | 1                           | mSATA    | yes          | no          | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin )      | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
-    | 1                           | mSATA    | yes          | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin )      | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
-    | 1                           | mPCIe    | no           | no          | [download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin)   | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin )                    |
-    | 1                           | mPCIe    | no           | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin )                    |
-    | 1                           | mPCIe    | yes          | no          | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
-    | 1                           | mPCIe    | yes          | yes         | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
+    | No                          | mSATA    | No           | No          | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin)                       | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin)                      |
+    | No                          | mSATA    | No           | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin )                     | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin)                      |
+    | No                          | mSATA    | Yes          | No          | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin )                     | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin)   |
+    | No                          | mSATA    | Yes          | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/bios_15122021.bin )                     | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin)   |
+    | No                          | mPCIe    | No           | No          | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin )                | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin )                    |
+    | No                          | mPCIe    | No           | Yes         | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin)                  | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin )                    |
+    | No                          | mPCIe    | Yes          | No          | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin )                | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
+    | No                          | mPCIe    | Yes          | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/normal/dual_pcie_15122021.bin )                | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
+    | Yes                         | mSATA    | No           | No          | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin)        | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin )                    |
+    | Yes                         | mSATA    | No           | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin )      | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin )                    |
+    | Yes                         | mSATA    | Yes          | No          | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin )      | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
+    | Yes                         | mSATA    | Yes          | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/bios_15122021_me_disable.bin )      | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
+    | Yes                         | mPCIe    | No           | No          | [Download](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin)   | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_slow_charge.bin )                    |
+    | Yes                         | mPCIe    | No           | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/normal/ec_15122021_fast_charge.bin )                    |
+    | Yes                         | mPCIe    | Yes          | No          | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_slow_charge_fn_ctrl_swap.bin ) |
+    | Yes                         | mPCIe    | Yes          | Yes         | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/bios/me_disable/dual_pcie_15122021_me_disable.bin ) | [Download]( https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/ec/fn_ctrl_swap/ec_15122021_fast_charge_fn_ctrl_swap.bin ) |
 1. Rename the BIOS as `bios.bin` and EC as `ec.bin`
 1. Download [flashrom](https://github.com/xy-tech/X2100-BIOS-EC/raw/main/x2100/flashrom) and the [helper script](https://raw.githubusercontent.com/xy-tech/X2100-BIOS-EC/main/x2100/x2100_helper.sh) (both are also available in the [releases](https://github.com/xy-tech/X2100-BIOS-EC/releases)). Alternatively, you can [compile flashrom yourself](#obtaining-flashrom).
 1. Place `bios.bin`, `ec.bin`, flashrom binary and `x2100_helper.sh` in the same folder.
@@ -163,6 +163,12 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 	* Enable promotion and demotion of C-states.
 	* Change package C-state to auto.
 
+# ME diable via HAP = 1
+* From my limited testings, HAP = 1 does not work as intended after running the me_cleaner script. The behaviour of the laptop is the same as HAP = 0 and intelmetool reports everything to be working even though the dumped ME image after running the script reports HAP bit to be set. The only way to set HAP = 1 seems to be via hardware [as detailed on my blogpost](https://www.xyte.ch/2021/12/14/x2100-me-bios-ec-and-coreboot/). 
+
+# BONUS 0: Coreboot
+* mjg59 has kindly ported coreboot to the X2100. Feel free to compile from his repo. It is included as a submodule for in this repo as well.
+
 # BONUS 1: How to edit and patch BIOS
 * Changing factory presets:
 	* Use AMIBIOS (google around for the binary) to adjust settings. Several versions don't really work. Just try out different versions on the internet and see which one works.
@@ -174,17 +180,15 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 * Google around to find out more. All warranty is voided if you attempt to do this. 
 * Doing this would probably make this the most secure laptop in the world as literally only you own the firmware keys. 
 
-# BONUS 3: Coreboot
-* mjg59 has kindly ported coreboot to the X2100. Feel free to compile from his repo. It is included as a submodule for in this repo as well. 
-
 # Thanks
 Thanks to everyone who made it possible.
-EC patches: mjg59, jwise, l29ah, exander77
-X210 coreboot: mjg59
-X210 compilation: harrykipper
-X2100 BIOS updates: chose to remain anonymous
-Flashrom: [flashrom team](https://www.flashrom.org/)
-Motherboard: 51nb, Hope, 17m19
+* EC patches: mjg59, jwise, l29ah, exander77
+* X210 coreboot: mjg59
+* X210 compilation: harrykipper
+* X2100 BIOS updates: chose to remain anonymous
+* Flashrom: [flashrom team](https://www.flashrom.org/)
+* Motherboard: 51nb, Hope, 17m19
+* Everyone else who has contributed to this project, the maintainerr and you: the user who has tested and debugged this laptop.
 
 # License
 The BIOS binaries contains copyrighted material from AMI but this repo is for documentation so please do not sue me. Everything else belongs to their respective copyright owners. Everything by me is GPLv3 including the helper script. Feel free to fork and play around.
