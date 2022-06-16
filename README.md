@@ -131,7 +131,7 @@ For Linux users, flashrom has to be compiled from source in order to flash the f
 1. Reboot and verify that all the settings are intact. 
 
 ### To update the EC region only
-1. Run the helper script to update the EC: `sudo bash x2100_helper.sh -f -b ec.bin`
+1. Run the helper script to update the EC: `sudo bash x2100_helper.sh -f -e ec.bin`
 1. _IMPORTANT_: Shutdown and unplug the power for 1 minute.
 1. Reboot and verify that all the settings are intact.
 
