@@ -4,7 +4,7 @@ A copy of this article is on [my website](https://www.xyte.ch/support/51nb-x210-
 This repo aims to cover all the relevant BIOS/EC information on the X210 and the X2100.
 
 # If you just want to update the BIOS/EC and don't want to read so much
-Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases) and read the README to flash the updates. The instructions are also found [here](#flashing-the-full-bios-image).
+Download the [latest release](https://github.com/xy-tech/X2100-BIOS-EC/releases) and read the README to flash the updates. The instructions are also found [here](#instructions-to-update).
 
 # Contents
 * x2100 (Main content of this repo, includes the BIOS and EC)
@@ -70,6 +70,14 @@ The git repos listed above are listed as git submodules, once you cloned this re
 
 # Instructions to update
 **Note:** After updating the BIOS to some of the recent unofficial ones, the version and build date shown in the BIOS setup won't change.
+
+## ISO image
+The ISO image provided uses Intel FIT tool in UEFI mode to flash the firmware binary. It was intended for development use but most small OEMs without bootguard use this method to update the image for convenience. It is exactly the same as the other methods highlighted here. 
+
+1. Download the ISO image in the release page. 
+1. Use [Rufus](https://rufus.ie/en/) or [dd](https://www.linuxandubuntu.com/home/how-to-burn-iso-image-to-dvd-and-usb-using-dd) to transfer the image onto an external thumb drive/storage device.
+1. Boot the thumb drive in UEFI mode and it will automatically flash the image.
+1. _IMPORTANT_: Shutdown, unplug and wait 1 minute before plugging power back in. 
 
 ## Windows
 This patches both the BIOS and EC. You'll need to build the BIOS with your [preferred BIOS image and EC](#building-and-flashing-your-selected-bios-in-linux) if you want a customised image.
